@@ -51,15 +51,15 @@ RSpec.describe "Reptiles", type: :request do
       post '/reptiles', params: reptile_params
       reptile = Reptile.first
 
-      update_reptile_parmas = {
+      update_reptile_params = {
         reptile: {
           name: 'Fred',
           age: 5,
-          enjoys: 'Eating bugs',
+          enjoys: 'Laying on a rock',
           image: 'https://i.natgeofe.com/k/c02b35d2-bfd7-4ed9-aad4-8e25627cd481/komodo-dragon-head-on_16x9.jpg?w=1200'
         }
       }
-      patch "/reptiles/#{reptile.id}", params: update_reptile_parmas
+      patch "/reptiles/#{reptile.id}", params: update_reptile_params
       updated_reptile = Reptile.find(reptile.id)
       expect(response).to have_http_status(200)
       expect(updated_reptile.age).to eq(5)
@@ -78,10 +78,11 @@ RSpec.describe "Reptiles", type: :request do
       }
 
       post '/reptiles', params: reptile_params
-
-      expect(response).to have_http_status(200)
       reptile = Reptile.first
-      expect(reptile.name).to eq 'Fred'
+      
+      delete "/reptiles/#{reptile.id}", params: reptile_params
+      expect(Reptile.find_by(id: reptile.id)).to be_nil
+      expect(response).to have_http_status(200)
     end
   end
 end

@@ -18,10 +18,11 @@ class ReptilesController < ApplicationController
   
     def destroy
         reptile = Reptile.find(params[:id])
+        reptiles = Reptile.all
         if reptile.destroy
-            render json: reptile
+            render json: reptiles
         else
-            render json: reptile.errors
+            render json: reptiles.errors
         end
     end
 
