@@ -1,0 +1,2 @@
+class ReptilesController < ApplicationController
+end
