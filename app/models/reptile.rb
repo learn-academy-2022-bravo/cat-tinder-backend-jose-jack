@@ -1,0 +1,2 @@
+class Reptile < ApplicationRecord
+end
