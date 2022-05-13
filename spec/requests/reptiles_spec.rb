@@ -85,5 +85,61 @@ RSpec.describe "Reptiles", type: :request do
       expect(response).to have_http_status(200)
     end
   end
+
+  describe " Reptile create request validations" do 
+    it "doesn't create a reptile without a name" do
+    reptile_params = {
+        reptile: {
+          age: 5,
+          enjoys: 'Eating bugs',
+          image: 'https://i.natgeofe.com/k/c02b35d2-bfd7-4ed9-aad4-8e25627cd481/komodo-dragon-head-on_16x9.jpg?w=1200'
+          }
+        }
+      post '/reptiles', params: reptile_params
+      expect(response).to have_http_status(422)
+      json = JSON.parse(response.body)      
+      expect(json['name']).to include "can't be blank"
+    end
+    it "doesn't create a reptile without an age" do
+      reptile_params = {
+          reptile: {
+            name: 'Fred',
+            enjoys: 'Eating bugs',
+            image: 'https://i.natgeofe.com/k/c02b35d2-bfd7-4ed9-aad4-8e25627cd481/komodo-dragon-head-on_16x9.jpg?w=1200'
+            }
+          }
+        post '/reptiles', params: reptile_params
+        expect(response).to have_http_status(422)
+        json = JSON.parse(response.body)      
+        expect(json['age']).to include "can't be blank"
+      end
+      it "doesn't create a reptile without an enjoys" do
+        reptile_params = {
+            reptile: {
+              name: 'Fred',
+              age: 5,
+              image: 'https://i.natgeofe.com/k/c02b35d2-bfd7-4ed9-aad4-8e25627cd481/komodo-dragon-head-on_16x9.jpg?w=1200'              
+            }
+          }
+          post '/reptiles', params: reptile_params
+          expect(response).to have_http_status(422)
+          json = JSON.parse(response.body)      
+          expect(json['enjoys']).to include "can't be blank"
+        end
+      it "doesn't create a reptile without an image" do
+        reptile_params = {
+            reptile: {
+              name: 'Fred',
+              age: 5,
+              enjoys: 'Eating bugs'              
+            }
+          }
+          post '/reptiles', params: reptile_params
+          expect(response).to have_http_status(422)
+          json = JSON.parse(response.body)      
+          expect(json['image']).to include "can't be blank"
+        end
+  end
+
 end
 

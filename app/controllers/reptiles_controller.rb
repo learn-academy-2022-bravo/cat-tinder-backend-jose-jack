@@ -4,18 +4,22 @@ class ReptilesController < ApplicationController
         reptiles = Reptile.all
         render json: reptiles
     end
-  
+
     def create
         reptile = Reptile.create(reptile_params)
-        render json: reptile
+        if reptile.valid?
+            render json: reptile
+        else
+            render json: reptile.errors, status: 422
+        end
     end
-  
+
     def update
         reptile = Reptile.find(params[:id])
         reptile.update(reptile_params)
         render json: reptile
     end
-  
+
     def destroy
         reptile = Reptile.find(params[:id])
         reptiles = Reptile.all
@@ -31,3 +35,4 @@ class ReptilesController < ApplicationController
         params.require(:reptile).permit(:name, :age, :enjoys, :image)
     end
 end
+
